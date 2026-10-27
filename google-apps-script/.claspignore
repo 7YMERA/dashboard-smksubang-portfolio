@@ -1,0 +1,4 @@
+# Only the script files and the manifest go to Google
+**/**
+!*.gs
+!appsscript.json
