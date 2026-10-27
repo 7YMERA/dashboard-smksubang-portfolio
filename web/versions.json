@@ -1,0 +1,141 @@
+[
+  {
+    "version": "2.11",
+    "date": "2026-10-27",
+    "title": "Penyata Cuti membaca semua guru",
+    "changes": [
+      "Sebelum ini hanya 5 penyata guru dibaca kerana pautan 'klik' yang lain tidak dapat dibaca. Kini penyata dicari mengikut nama guru jika pautan tidak dapat dibaca.",
+      "Semakan sistem (checkSetup) menunjukkan berapa penyata dijumpai dan guru yang tiada penyata."
+    ]
+  },
+  {
+    "version": "2.10",
+    "date": "2026-10-27",
+    "title": "Guru boleh semak penyata cuti sendiri",
+    "changes": [
+      "Setiap guru ada pautan peribadi untuk melihat penyata cutinya sendiri tanpa log masuk.",
+      "Penyata Cuti → lajur Pautan guru: Salin pautan (mesej sedia untuk WhatsApp), status Dibuka / Belum dibuka, dan Tukar pautan jika pautan tersebar.",
+      "Tiada nombor IC atau tarikh lahir digunakan atau disimpan."
+    ]
+  },
+  {
+    "version": "2.9",
+    "date": "2026-10-27",
+    "title": "Log masuk Google ditangguhkan",
+    "changes": [
+      "Butang 'Log masuk dengan Google' dibuang buat sementara. Log masuk dengan emel dan kata laluan seperti biasa.",
+      "Log Audit, menu Panel Admin dan kiraan pelawat kekal."
+    ]
+  },
+  {
+    "version": "2.8",
+    "date": "2026-10-27",
+    "title": "Panel Admin baharu: menu di sebelah kiri",
+    "changes": [
+      "Menu di sebelah kiri dengan semua bahagian Panel Admin; boleh dikecilkan (ikon sahaja). Di telefon: butang ☰ Menu.",
+      "Log keluar sentiasa kelihatan di bawah menu, dan di dashboard awam (penjuru kanan atas) semasa log masuk.",
+      "Halaman Ringkasan: kotak besar untuk status sistem, belum hantar, masalah data, pautan dan pengumuman, serta aktiviti terkini.",
+      "Pautan dan Pengumuman dalam bentuk kad. Tekan Ubah untuk borang yang lebih jelas, dengan nama dan penerangan setiap kotak.",
+      "Tulisan dan butang lebih besar dalam Panel Admin.",
+      "Penyata Cuti menunjukkan berapa guru sudah dibaca daripada jumlah (contoh 40 daripada 155) semasa penyata masih dibaca."
+    ]
+  },
+  {
+    "version": "2.7",
+    "date": "2026-10-27",
+    "title": "Log Audit dan log masuk Google",
+    "changes": [
+      "Log Audit dalam Panel Admin: siapa log masuk (termasuk cubaan yang gagal) dan apa yang diubah pada pautan, pengumuman, akaun dan Sync sekarang. Rekod tidak boleh diubah atau dipadam.",
+      "Butang 'Log masuk dengan Google' (contoh akaun DELIMa). Hanya emel yang sudah ditambah di bahagian Akaun boleh masuk; log masuk emel dan kata laluan kekal.",
+      "Mesej log masuk lebih jelas: kata laluan salah, terlalu banyak cubaan, atau ralat sistem.",
+      "Kiraan pelawat (Vercel Web Analytics): jumlah pelawat dan halaman, tanpa kuki dan tanpa nama."
+    ]
+  },
+  {
+    "version": "2.6",
+    "date": "2026-10-27",
+    "title": "Semua dalam dashboard",
+    "changes": [
+      "Pilihan dashboard di bahagian atas: Semakan Tinjauan (utama), Jadual Makmal, Penyata Cuti, Analisis PdPc dan Pautan.",
+      "Semakan Tinjauan dipaparkan terus: tugasan terbuka dan senarai penuh dengan tapisan status dan carian.",
+      "Jadual Makmal Komputer dipaparkan sebagai jadual mengikut minggu. Orang awam nampak subjek dan kelas; nama guru selepas log masuk.",
+      "Penyata Cuti Guru: ringkasan CRK, cuti sakit dan lain-lain bagi setiap guru (log masuk sahaja), dikemas kini sekali sehari.",
+      "Sheet asal kekal digunakan seperti biasa; setiap paparan ada pautan 'Buka sheet asal'."
+    ]
+  },
+  {
+    "version": "2.5",
+    "date": "2026-10-27",
+    "title": "Sync sekarang dan semakan sistem",
+    "changes": [
+      "Butang 'Sync sekarang' dalam Panel Admin → Status Sync: data terkini dalam masa kira-kira 5 minit, tanpa menunggu sejam.",
+      "Semakan sistem (checkSetup) dalam Apps Script: senarai ✅/❌ untuk tetapan, sambungan, sheet, lajur dan jadual automatik.",
+      "Panduan Pengguna dalam bentuk PDF, dengan sejarah versi."
+    ]
+  },
+  {
+    "version": "2.4",
+    "date": "2026-10-27",
+    "title": "Urus akaun sendiri",
+    "changes": [
+      "Bahagian Akaun dalam Panel Admin: tambah Pentadbir atau Admin tanpa perlu masuk Supabase.",
+      "Butang Jana (kata laluan automatik) dan Salin maklumat log masuk untuk dihantar melalui WhatsApp.",
+      "Tukar peranan, buat kata laluan baharu dan buang akses. Akaun sendiri dilindungi daripada terbuang."
+    ]
+  },
+  {
+    "version": "2.3",
+    "date": "2026-10-27",
+    "title": "Jenama sekolah",
+    "changes": [
+      "Kepala halaman biru seperti banner sheet SEMAKAN: lencana sekolah, tajuk, gambar Pengetua dan Guru Data dan Maklumat.",
+      "Fon dan warna mengikut sheet asal. Lencana sekolah pada tab pelayar dan semasa pautan dikongsi di WhatsApp."
+    ]
+  },
+  {
+    "version": "2.2",
+    "date": "2026-10-27",
+    "title": "Rupa baharu dan mod gelap",
+    "changes": [
+      "Reka bentuk baharu: bar atas, ringkasan nombor di kepala halaman, kad tugasan berwarna mengikut tarikh.",
+      "Mod gelap: pilih Terang, Auto atau Gelap di penjuru kanan atas.",
+      "Butang Log masuk yang jelas. Admin dan Pentadbir guna log masuk yang sama."
+    ]
+  },
+  {
+    "version": "2.1",
+    "date": "2026-10-27",
+    "title": "Sambungan Google Sheets",
+    "changes": [
+      "Data dibaca terus dari Google Sheets setiap jam (Apps Script dipasang).",
+      "'belum respons' dikira belum hantar; 'CTG' / 'CUTI' tidak dikira dalam jumlah."
+    ]
+  },
+  {
+    "version": "2.0",
+    "date": "2026-10-27",
+    "title": "Modul lengkap",
+    "changes": [
+      "Tugasan (menggantikan sheet SEMAKAN), Penghantaran (siapa belum hantar), Analisis PdPc, Status Sync.",
+      "Peranan Pentadbir (lihat sahaja) untuk Pengetua dan PK.",
+      "Pengesahan Input untuk mengelakkan kesilapan seperti markah 9,286.00."
+    ]
+  },
+  {
+    "version": "1.1",
+    "date": "2026-10-27",
+    "title": "Panel Admin",
+    "changes": [
+      "Log masuk dengan emel dan kata laluan.",
+      "Tambah, ubah dan sembunyikan pautan serta pengumuman dari pelayar."
+    ]
+  },
+  {
+    "version": "1.0",
+    "date": "2026-10-26",
+    "title": "Dashboard pertama",
+    "changes": [
+      "Tujuh pautan sekolah dalam satu halaman di internet."
+    ]
+  }
+]

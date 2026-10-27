@@ -1,0 +1,9 @@
+node_modules/
+.next/
+.env
+.env.local
+.vercel/
+supabase/.temp/
+
+# Apps Script project link (per person)
+.clasp.json

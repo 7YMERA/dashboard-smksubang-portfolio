@@ -1,0 +1,22 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "regions": ["sin1"],
+  "services": {
+    "smksubang-api": {
+      "root": "api",
+      "framework": "express",
+      "entrypoint": "src/app.js"
+    },
+    "web": {
+      "root": "web",
+      "framework": "nextjs",
+      "bindings": [
+        { "type": "service", "service": "smksubang-api", "format": "url", "env": "API_URL" }
+      ]
+    }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": { "service": "smksubang-api" } },
+    { "source": "/(.*)", "destination": { "service": "web" } }
+  ]
+}
