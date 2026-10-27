@@ -18,6 +18,22 @@ export async function login(_prev, formData) {
   redirect('/admin');
 }
 
+// "Tetapkan kata laluan" page (one-time link): set the password, then straight into Panel Admin.
+export async function completeSetup(_prev, formData) {
+  const password = String(formData.get('password') || '');
+  if (password.length < 8) return { error: 'Kata laluan sekurang-kurangnya 8 aksara.' };
+  if (password !== String(formData.get('confirm') || '')) return { error: 'Kedua-dua kata laluan tidak sama. Taip semula.' };
+  try {
+    const { token, expiresAt } = await apiFetch('api/auth/setup', {
+      method: 'POST', body: { token: String(formData.get('token') || ''), password },
+    });
+    await setSessionCookie(token, expiresAt);
+  } catch (err) {
+    return { error: err.message };
+  }
+  redirect('/admin');
+}
+
 export async function logout() {
   const admin = await getAdmin();
   if (admin) await apiFetch('api/auth/logout', { token: admin.token, method: 'POST' }).catch(() => {});
@@ -27,9 +43,10 @@ export async function logout() {
 
 // Every edit action returns { ok } or { error } for the form row to show (no error pages).
 async function write(path, method, body) {
+  let data;
   try {
     const { token } = await requireAdmin({ write: true });
-    await apiFetch(path, { token, method, body });
+    data = await apiFetch(path, { token, method, body });
   } catch (err) {
     if (err?.digest?.startsWith?.('NEXT_REDIRECT')) throw err; // session expired → login page
     return { error: err.message };
@@ -37,7 +54,7 @@ async function write(path, method, body) {
   updateTag('dashboard');
   revalidatePath('/admin', 'layout');
   revalidatePath('/');
-  return { ok: true, at: Date.now() };
+  return { ok: true, at: Date.now(), data };
 }
 
 const text = (fd, k) => String(fd.get(k) ?? '').trim();
@@ -110,23 +127,21 @@ export async function deleteAnnouncement(_prev, fd) {
 // ---- Akaun (admin only; the API refuses everyone else) ----
 
 export async function addAccount(_prev, fd) {
-  const body = { name: text(fd, 'name'), email: text(fd, 'email'), role: text(fd, 'role'), password: String(fd.get('password') || '') };
+  const body = { name: text(fd, 'name'), email: text(fd, 'email'), role: text(fd, 'role') };
   if (!body.name) return keep(fd, { error: 'Nama wajib diisi.' });
   if (!/^\S+@\S+\.\S+$/.test(body.email)) return keep(fd, { error: 'Emel tidak sah.' });
-  if (body.password.length < 8) return keep(fd, { error: 'Kata laluan sekurang-kurangnya 8 aksara. Tekan "Jana" untuk buat satu.' });
   const result = await write('api/admin/accounts', 'POST', body);
-  return result.ok ? { ...result, created: { name: body.name, email: body.email, role: body.role, password: body.password } } : keep(fd, result);
+  return result.ok ? { ...result, created: { name: body.name, email: body.email, role: body.role, ...result.data } } : keep(fd, result);
 }
 
 export async function changeRole(_prev, fd) {
   return write(`api/admin/accounts/${text(fd, 'id')}`, 'PATCH', { role: text(fd, 'role') });
 }
 
-export async function setPassword(_prev, fd) {
-  const password = String(fd.get('password') || '');
-  if (password.length < 8) return { error: 'Kata laluan sekurang-kurangnya 8 aksara.' };
-  const result = await write(`api/admin/accounts/${text(fd, 'id')}/password`, 'POST', { password });
-  return result.ok ? { ...result, password } : result;
+// "Pautan kata laluan baharu": a new one-time link for that person to set their own password.
+export async function sendSetupLink(_prev, fd) {
+  const result = await write(`api/admin/accounts/${text(fd, 'id')}/setup-link`, 'POST', {});
+  return result.ok ? { ...result, link: result.data } : result;
 }
 
 export async function removeAccount(_prev, fd) {

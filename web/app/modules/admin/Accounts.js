@@ -1,33 +1,42 @@
 'use client';
 
-// MODULE Akaun (admin only): add a Pentadbir/Admin, change role, set a new password, remove access.
-import { useActionState, useEffect, useState } from 'react';
-import { addAccount, changeRole, removeAccount, setPassword } from '@/app/admin/actions';
+// MODULE Akaun (admin only): add a Pentadbir/Admin, change role, send a new set-password link, remove access.
+// Nobody types or sees a password here: each person sets their own through a one-time link.
+import { useActionState, useState } from 'react';
+import { addAccount, changeRole, removeAccount, sendSetupLink } from '@/app/admin/actions';
 import { fmtDateTime } from '../ui/format';
 
 const ROLE = { admin: 'Admin', pentadbir: 'Pentadbir (lihat sahaja)' };
 
-// Easy to read aloud / type on a phone: no 0/O, 1/l/I.
-function generatePassword() {
-  const chars = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  const bytes = crypto.getRandomValues(new Uint8Array(10));
-  return Array.from(bytes, (b) => chars[b % chars.length]).join('');
-}
+const validFor = (min) => (min % 60 ? `${min} minit` : `${min / 60} jam`);
 
-function CopyLogin({ name, email, password }) {
+// The one-time "Tetapkan kata laluan" link: copy a ready message, or open Telegram (the teachers' official channel)
+// to pick the person's chat. No bot needed.
+function SetupLink({ name, email, link }) {
   const [copied, setCopied] = useState(false);
-  const text = `Salam ${name}. Akaun Dashboard Data SMK Subang anda:\n${location.origin}/admin\nEmel: ${email}\nKata laluan: ${password}\n(Sila simpan dengan selamat.)`;
+  const valid = validFor(link.valid_minutes);
+  const intro = `Salam ${name}. Akaun Panel Admin Dashboard Data SMK Subang anda sudah sedia.\n`
+    + `Tekan pautan ini untuk tetapkan kata laluan anda sendiri (sah ${valid}, sekali guna sahaja).`;
+  const after = `Selepas itu, log masuk di ${location.origin}/admin dengan emel ${email}.`;
+  const text = `${intro}\n${link.setup_url}\n${after}`;
+  const telegram = `https://t.me/share/url?url=${encodeURIComponent(link.setup_url)}&text=${encodeURIComponent(`\n${intro}\n${after}`)}`;
   return (
-    <button type="button" className="btn" onClick={async () => {
-      await navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000);
-    }}>{copied ? 'Disalin ✓' : 'Salin maklumat log masuk'}</button>
+    <div className="account-done" role="status">
+      {link.emailed
+        ? <p>✉ Pautan juga dihantar ke emel <strong>{email}</strong>.</p>
+        : <p>Hantar pautan ini kepada <strong>{name}</strong> secara peribadi (Telegram). Ia sah <strong>{valid}</strong> dan boleh digunakan sekali sahaja.</p>}
+      <span className="link-actions">
+        <button type="button" className="btn primary" onClick={async () => {
+          await navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000);
+        }}>{copied ? 'Disalin ✓' : 'Salin pautan'}</button>
+        <a className="btn" href={telegram} target="_blank" rel="noopener noreferrer">Hantar di Telegram</a>
+      </span>
+    </div>
   );
 }
 
 function AddAccount() {
   const [state, action, pending] = useActionState(addAccount, undefined);
-  const [pw, setPw] = useState('');
-  useEffect(() => { if (state?.created) setPw(''); }, [state]); // ready for the next account
   const v = state?.values ?? {};
   return (
     <form action={action} className="account-add">
@@ -41,21 +50,15 @@ function AddAccount() {
             <option value="admin">Admin (boleh ubah)</option>
           </select>
         </label>
-        <label>Kata laluan sementara
-          <span className="pw-row">
-            <input name="password" value={pw} onChange={(e) => setPw(e.target.value)} autoComplete="new-password" />
-            <button type="button" className="btn" onClick={() => setPw(generatePassword())}>Jana</button>
-          </span>
-        </label>
       </div>
+      <p className="muted small">Tiada kata laluan perlu dibuat. Orang itu menerima pautan untuk menetapkan kata laluannya sendiri.</p>
       <button type="submit" className="btn primary" disabled={pending}>{pending ? 'Sedang menambah…' : 'Tambah akaun'}</button>
       {state?.error && <p className="row-msg error" role="alert">{state.error}</p>}
       {state?.created && (
-        <div className="account-done" role="status">
-          <p>✓ Akaun <strong>{state.created.name}</strong> ({ROLE[state.created.role]}) sudah dibuat.
-            Hantar maklumat log masuk kepadanya (contoh melalui WhatsApp):</p>
-          <CopyLogin {...state.created} />
-        </div>
+        <>
+          <p className="row-msg ok">✓ Akaun <strong>{state.created.name}</strong> ({ROLE[state.created.role]}) sudah dibuat.</p>
+          <SetupLink name={state.created.name} email={state.created.email} link={state.created} />
+        </>
       )}
     </form>
   );
@@ -63,7 +66,7 @@ function AddAccount() {
 
 function AccountRow({ a }) {
   const [roleState, roleAction] = useActionState(changeRole, undefined);
-  const [pwState, pwAction, pwPending] = useActionState(setPassword, undefined);
+  const [pwState, pwAction, pwPending] = useActionState(sendSetupLink, undefined);
   const [delState, delAction] = useActionState(removeAccount, undefined);
   const msg = [roleState, pwState, delState].find((s) => s?.error)?.error;
   return (
@@ -82,13 +85,7 @@ function AccountRow({ a }) {
       </form>
       <form action={pwAction}>
         <input type="hidden" name="id" value={a.user_id} />
-        <input type="hidden" name="password" value="" />
-        <button className="btn" disabled={pwPending} onClick={(e) => {
-          if (!confirm(`Buat kata laluan baharu untuk ${a.name || a.email}? Kata laluan lama tidak akan berfungsi lagi.`)) { e.preventDefault(); return; }
-          e.currentTarget.form.password.value = generatePassword();
-        }}>
-          Kata laluan baharu
-        </button>
+        <button className="btn" disabled={pwPending}>{pwPending ? 'Sedang membuat…' : 'Pautan kata laluan baharu'}</button>
       </form>
       {!a.is_me && (
         <form action={delAction}>
@@ -97,12 +94,7 @@ function AccountRow({ a }) {
         </form>
       )}
       {roleState?.ok && <p className="row-msg ok">Peranan dikemas kini ✓</p>}
-      {pwState?.ok && (
-        <div className="account-done">
-          <p>Kata laluan baharu: <code>{pwState.password}</code></p>
-          <CopyLogin name={a.name || ''} email={a.email} password={pwState.password} />
-        </div>
-      )}
+      {pwState?.ok && <SetupLink name={a.name || a.email} email={a.email} link={pwState.link} />}
       {msg && <p className="row-msg error" role="alert">{msg}</p>}
     </li>
   );

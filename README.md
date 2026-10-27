@@ -27,6 +27,10 @@ the source of truth, and every view links back).
   links, announcements, PdPc analysis charts, lab timetable.
 - **Panel Admin (login):** who hasn't submitted, with a one-tap *copy for WhatsApp* list; data problems to fix
   with sheet + row; accounts and roles; an append-only audit log; leave summary for every teacher.
+- **Passwordless onboarding:** a new admin gets a one-time set-password link (24 h, single use) sent
+  straight to Telegram, the app the teachers actually use. Nobody ever types or sees someone else's password.
+- **Built for phones first:** instant view switching with no page reloads, card layouts instead of sideways-scrolling
+  tables, and the school crest as an installable home-screen icon.
 - **Teachers' own leave statement** through a personal secret link (no login, no IC numbers).
 - **Hourly sync** from Google Sheets/Forms via Apps Script, plus a *Sync sekarang* button.
 
@@ -65,6 +69,7 @@ Browser ──► │ /*      → web (Next.js) ──binding API_URL──► s
 | **Jadual Makmal** | Computer-lab timetable read from an Excel file in Drive; teacher names only after login |
 | **Penyata Cuti** | Leave summary for ~150 teachers, read in time-boxed batches; personal links for each teacher |
 | **Status Sync** | Last sync, *Sync sekarang*, and a to-fix list of data problems |
+| **Akaun** (accounts) | Add admins and principals; each gets a one-time set-password link via Telegram share (no bot) or copy |
 | **Log Audit** | Every login and every admin change (old → new), append-only, enforced by a database trigger |
 | **Pengesahan Input** | Adds validation to the source Forms/Sheets: 0–100 scores, required fields, dropdowns, real dates |
 
@@ -88,6 +93,9 @@ Browser ──► │ /*      → web (Next.js) ──binding API_URL──► s
 - **The API checks the role on every request**, and strips teacher names from lab/leave data for anonymous callers.
 - **Personal leave links** are 192-bit random tokens: no IC number or birthdate (both easy to guess and
   personal data under Malaysia's PDPA). Pages are `noindex`, `no-referrer`, and analytics never record the token.
+- **Set-password links** are random tokens stored only as a SHA-256 hash, valid 24 hours and usable once; a new link
+  cancels the older one. The setup page is `noindex`/`no-referrer`, and the audit log records that a link was made
+  or used, never the link or the password.
 - **Audit log** can't be edited or deleted (database trigger), and never stores passwords.
 
 ## Data quality
@@ -101,7 +109,19 @@ Browser ──► │ /*      → web (Next.js) ──binding API_URL──► s
 ## Tech stack
 
 Next.js (App Router) · React · Express · Supabase (Postgres, RLS, Auth) · Vercel (one project, two services,
-Web Analytics) · Google Apps Script + clasp · GitHub Actions CI · hand-rolled SVG charts (accessible, light/dark).
+Web Analytics) · Google Apps Script + clasp · GitHub Actions (CI, plus database migrations applied automatically on
+merge) · Web App Manifest · optional email via Resend · hand-rolled SVG charts (accessible, light/dark).
+
+## Recent updates
+
+| Version | What changed | Why |
+|---|---|---|
+| **2.16** | School crest as favicon and home-screen icon (squared, maskable for Android), web manifest | Teachers add the dashboard to their phone's home screen; it should look like the school's own app |
+| **2.15** | Client-side view switching with a pending indicator, one-line week picker for the lab timetable, stacked card tables and a compact header on phones | Most teachers open it on a phone; the header used to take 600 px before any task showed |
+| **2.14** | One-time set-password links instead of admin-generated passwords, shared through Telegram | Passwords were being pasted into chats; now nobody but the owner ever knows one |
+| CI | Database migrations run from GitHub Actions on merge; workflows moved to Node 24 actions | No more manual `supabase db push` from someone's laptop |
+
+Every user-visible change also ships a plain-Malay "what's new" note inside the app (`web/versions.json`).
 
 ## What I learned
 
@@ -111,6 +131,7 @@ Web Analytics) · Google Apps Script + clasp · GitHub Actions CI · hand-rolled
 - Privacy has to be designed in at every layer (sync, database policies, API, page), not added at the end.
 - Messy real data (free text in score columns, links that aren't links) needs tolerant parsing *and* a visible
   to-fix list.
+- Meet users where they are: the teachers do official work on Telegram, not email, so sharing went there.
 
 ## Built with AI assistance
 

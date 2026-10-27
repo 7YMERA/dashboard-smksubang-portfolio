@@ -31,7 +31,7 @@ export default function TaskTable({ tasks, trackers }) {
         </label>
       </div>
       <div className="table-scroll">
-        <table className="sheet-table">
+        <table className="sheet-table stack">
           <thead>
             <tr><th className="c">Bil</th><th>Tugasan</th><th>Tarikh akhir</th><th>Baki masa</th><th>Status</th><th>Kemajuan</th></tr>
           </thead>
@@ -42,12 +42,12 @@ export default function TaskTable({ tasks, trackers }) {
               const tone = t.status === 'SELESAI' ? 'good' : t.status === 'BUKA' ? 'warning' : 'neutral';
               return (
                 <tr key={t.id}>
-                  <td className="c muted">{i + 1}</td>
-                  <td>{t.url ? <a href={t.url} target="_blank" rel="noopener noreferrer">{t.title}</a> : t.title}</td>
-                  <td className="nowrap">{fmtDate(t.deadline) || '—'}</td>
-                  <td>{s ? <span className={`chip ${s.tone}`}>{s.icon} {s.text}</span> : <span className="muted">—</span>}</td>
-                  <td><span className={`chip ${tone}`}>{t.status || '—'}</span></td>
-                  <td className="nowrap">{tr ? `${num.format(tr.done)}/${num.format(tr.total)}` : <span className="muted">—</span>}</td>
+                  <td className="c muted bil">{i + 1}</td>
+                  <td className="title">{t.url ? <a href={t.url} target="_blank" rel="noopener noreferrer">{t.title}</a> : t.title}</td>
+                  <td className="nowrap" data-label="Tarikh akhir">{fmtDate(t.deadline) || '—'}</td>
+                  <td data-label="Baki masa">{s ? <span className={`chip ${s.tone}`}>{s.icon} {s.text}</span> : <span className="muted">—</span>}</td>
+                  <td data-label="Status"><span className={`chip ${tone}`}>{t.status || '—'}</span></td>
+                  <td className="nowrap" data-label="Kemajuan">{tr ? `${num.format(tr.done)}/${num.format(tr.total)}` : <span className="muted">—</span>}</td>
                 </tr>
               );
             })}
