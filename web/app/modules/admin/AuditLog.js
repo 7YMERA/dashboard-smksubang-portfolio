@@ -9,12 +9,12 @@ const ACTION = {
   login: 'Log masuk', login_failed: 'Log masuk gagal', logout: 'Log keluar',
   'link.create': 'Tambah pautan', 'link.update': 'Ubah pautan', 'link.delete': 'Padam pautan',
   'announcement.create': 'Tambah pengumuman', 'announcement.update': 'Ubah pengumuman', 'announcement.delete': 'Padam pengumuman',
-  'account.create': 'Tambah akaun', 'account.update': 'Ubah akaun', 'account.password': 'Kata laluan baharu', 'account.delete': 'Buang akaun',
+  'account.create': 'Tambah akaun', 'account.update': 'Ubah akaun', 'account.password': 'Kata laluan baharu', 'account.setup_link': 'Pautan kata laluan baharu', 'account.password_set': 'Kata laluan ditetapkan sendiri', 'account.delete': 'Buang akaun',
   'sync.request': 'Sync sekarang', 'leave.link_reset': 'Tukar pautan penyata cuti', 'metric.update': 'Ubah angka', 'data.import': 'Import data',
 };
 
 const FIELD = { title: 'tajuk', url: 'URL', category: 'kategori', description: 'keterangan', sort_order: 'susunan', is_active: 'aktif',
-  tracker_key: 'kemajuan', body: 'butiran', expires_at: 'tamat', role: 'peranan', name: 'nama', method: 'cara', sebab: 'sebab' };
+  tracker_key: 'kemajuan', body: 'butiran', expires_at: 'tamat', role: 'peranan', name: 'nama', method: 'cara', sebab: 'sebab', emel: 'emel' };
 
 const show = (v) => (v === null || v === undefined || v === '' ? '(kosong)' : v === true ? 'ya' : v === false ? 'tidak' : String(v));
 

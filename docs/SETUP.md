@@ -84,6 +84,8 @@ The header recreates the banner from the SEMAKAN sheet: school blue with light w
 - Settings: `web/app/modules/ui/brand.js` (school name, motto, crest, people with name/role/photo).
   `people: []` hides the photos (as in this public copy).
 - Images: `web/public/brand/` (`logo.png` crest with transparent background; staff photos go here too).
+- Site icons, squared from the crest: `icon-192.png`, `icon-512.png`, `icon-maskable-512.png`, `apple-icon.png`,
+  plus `web/public/favicon.ico`; the home-screen manifest is `web/app/manifest.js`.
 - Original sheet links per view: `web/app/modules/ui/sources.js`.
 - Photos and names of staff are on a public page: keep the people listed there informed and agreeable,
   and remove them from any public copy of the code.
@@ -154,8 +156,12 @@ shows **Panel Admin** and **Log keluar** when logged in.
 
 ### Managing accounts
 
-**Normally from Panel Admin → Akaun** (admin only): add an account (name, email, role, generated temporary
-password, "copy login details" for WhatsApp), change role, set a new password, remove access. An admin can't
+**Normally from Panel Admin → Akaun** (admin only): add an account (name, email, role), change role, send a new
+set-password link, remove access. Nobody types or sees anyone else's password: adding an account (or **Pautan kata
+laluan baharu**) makes a **one-time link** `/admin/tetapkan/<token>`, valid 24 hours, which the admin sends with
+**Hantar di Telegram** (Telegram's share page, no bot) or **Salin pautan**. The person sets their own password there and
+is logged straight in. Only a SHA-256 hash of the link is stored (private table `account_setup_links`); making a new
+link cancels that person's older unused one. Optional: with `RESEND_API_KEY` + `EMAIL_FROM` set, the link is also emailed. An admin can't
 remove or downgrade their own account, so nobody locks themselves out. Step-by-step in Malay: [PANDUAN.md](../PANDUAN.md).
 
 The **first admin** (or recovery when the only admin forgot the password) is done in Supabase:
@@ -190,6 +196,17 @@ supabase db push --linked                           # later: new migrations only
 
 Then create your account as in [Managing accounts](#managing-accounts) with role `admin`.
 
+**Later migrations are automatic.** The GitHub Action **Database migrations** (`.github/workflows/db-migrations.yml`)
+runs `supabase db push` whenever a file in `supabase/migrations/` reaches `main` (or by hand: Actions → Run workflow).
+It needs two secrets and one variable in GitHub → repo → Settings → Secrets and variables → Actions
+(without them the job is skipped):
+
+| Secret | Where to get it |
+|---|---|
+| `SUPABASE_ACCESS_TOKEN` | Supabase → your avatar → **Account preferences → Access Tokens → Generate new token** (from an account that can manage the project) |
+| `SUPABASE_DB_PASSWORD` | Supabase → project → **Project Settings → Database → Database password** (reset it there if nobody knows it; the site uses the API key, not this password) |
+| `SUPABASE_PROJECT_ID` (variable, not secret) | the project ref, from the Supabase URL `https://<project-ref>.supabase.co` |
+
 ### 2. Vercel (web + API)
 
 Import the repo with **Root Directory `./`** (services are read from `vercel.json`). Environment
@@ -200,6 +217,8 @@ variables (Production + Preview), then **Redeploy** after any change:
 | `SUPABASE_URL` | `https://<project-ref>.supabase.co` |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase secret key (`sb_secret_…`) |
 | `ADMIN_TOKEN` | long random string (`openssl rand -hex 32`), also used by the Apps Script |
+| `SITE_URL` | optional: public address used in set-password links (default: the Vercel production domain) |
+| `RESEND_API_KEY`, `EMAIL_FROM` | optional: also email set-password links through [Resend](https://resend.com) (`EMAIL_FROM` on a domain verified there). Without them, links are sent by Telegram from Panel Admin |
 
 Don't set `API_URL`; the `web` service gets it from its binding. Check `/api/health` shows `"ok":true`
 and an empty `missingEnv`.
@@ -232,9 +251,11 @@ See [google-apps-script/README.md](../google-apps-script/README.md): paste the `
 | GET | `/api/admin/me` | pentadbir+ | Who is logged in |
 | GET | `/api/admin/overview` | pentadbir+ | Trackers with pending names, all charts, last 10 syncs |
 | GET | `/api/admin/links`, `/api/admin/announcements` | pentadbir+ | Everything, including hidden |
-| GET/POST | `/api/admin/accounts` | admin, system | List / add Panel Admin accounts (creates the Supabase Auth user) |
+| GET/POST | `/api/admin/accounts` | admin, system | List / add Panel Admin accounts (creates the Supabase Auth user; POST `{name,email,role}` returns a set-password link) |
 | PATCH/DELETE | `/api/admin/accounts/:userId` | admin, system | Change role / remove access (not your own) |
-| POST | `/api/admin/accounts/:userId/password` | admin, system | Set a new password |
+| POST | `/api/admin/accounts/:userId/setup-link` | admin, system | New one-time set-password link (`{setup_url, expires_at, emailed}`); audited |
+| GET | `/api/auth/setup/:token` | public (secret link) | Who a set-password link is for (name, email, role), if unused and unexpired |
+| POST | `/api/auth/setup` | public (secret link) | `{token, password}` → sets the password, uses up the link, returns a 7-day session |
 | POST | `/api/links`, `/api/admin/announcements` | admin, system | Create |
 | PATCH/DELETE | `/api/admin/links/:id`, `/api/admin/announcements/:id` | admin, system | Edit / delete |
 | POST | `/api/admin/sync-request` | pentadbir+ | "Sync sekarang": ask the Apps Script to sync within ~5 minutes |

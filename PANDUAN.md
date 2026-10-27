@@ -28,7 +28,7 @@ Di bawah kepala biru ada butang untuk bertukar paparan:
 **📋 Semakan Tinjauan** (utama) · **🖥 Jadual Makmal** · **🗓 Penyata Cuti 🔒** · **📊 Analisis PdPc** · **🔗 Pautan**.
 Isi setiap sheet dipaparkan terus; sheet asal tetap diisi seperti biasa (ada pautan *Buka sheet asal*).
 
-- **Jadual Makmal:** pilih minggu (minggu ini dipaparkan dahulu). Orang awam nampak subjek dan kelas; nama guru selepas log masuk.
+- **Jadual Makmal:** tekan **←** / **→** atau pilih minggu dalam senarai, dan ia terus dibuka (minggu ini dipaparkan dahulu). Di telefon, leret jadual ke kiri; lajur hari kekal di tepi. Orang awam nampak subjek dan kelas; nama guru selepas log masuk.
 - **Penyata Cuti:** senarai semua guru hanya untuk Admin dan Pentadbir. Ringkasan CRK, cuti sakit dan lain-lain setiap guru; dikemas kini sekali sehari.
 - **Penyata cuti untuk guru sendiri (tanpa log masuk):** setiap guru ada **pautan peribadi**. Dalam Penyata Cuti, lajur
   **Pautan guru** → tekan **Salin pautan** → tampal dalam WhatsApp **peribadi** guru itu (bukan kumpulan). Guru hanya
@@ -127,16 +127,17 @@ Hanya **Admin** boleh buat ini. Tidak perlu masuk Supabase.
    - **Nama**: contohnya *Puan Aminah (Pengetua)*
    - **Emel**: emel orang itu (sebaiknya emel MOE)
    - **Peranan**: *Pentadbir (lihat sahaja)*. Pilih *Admin* hanya untuk orang yang perlu mengubah pautan/pengumuman.
-3. Tekan **Jana** untuk buat kata laluan sementara secara automatik.
-4. Tekan **Tambah akaun**. Kotak biru akan keluar: *Akaun … sudah dibuat*.
-5. Tekan **Salin maklumat log masuk**, kemudian tampal dalam WhatsApp kepada orang itu.
-   Mesej sudah mengandungi pautan, emel dan kata laluan.
-6. Orang itu tekan **Log masuk** di dashboard dan masukkan emel serta kata laluan tersebut.
+3. Tekan **Tambah akaun**. Kotak biru akan keluar: *Akaun … sudah dibuat*. Cikgu tidak perlu membuat kata laluan.
+4. Tekan **Hantar di Telegram** dan pilih chat orang itu (atau tekan **Salin pautan** dan tampal sendiri).
+   Mesej itu mengandungi **pautan khas** untuk orang itu menetapkan kata laluannya sendiri.
+5. Orang itu tekan pautan, taip kata laluan baharu dua kali, tekan **Simpan dan masuk**, dan terus masuk ke Panel Admin.
+   Kali seterusnya, dia log masuk dengan emel dan kata laluan itu.
+- Pautan itu **sah 24 jam** dan **boleh digunakan sekali sahaja**. Jika sudah tamat, tekan **Pautan kata laluan baharu** (di bawah).
 
 **Urus akaun yang sedia ada** (dalam senarai di bahagian Akaun):
 - **Tukar peranan**: pilih *Pentadbir* atau *Admin* pada kotak pilihan; ia disimpan terus.
-- **Lupa kata laluan**: tekan **Kata laluan baharu** → *OK*. Kata laluan baharu dipaparkan; salin dan hantar.
-  Kata laluan lama tidak berfungsi lagi.
+- **Lupa kata laluan** (atau pautan sudah tamat): tekan **Pautan kata laluan baharu**, kemudian **Hantar di Telegram**.
+  Orang itu menetapkan kata laluan baharu sendiri. Pautan lama yang belum digunakan terus tidak berfungsi.
 - **Buang akses** (contoh: bertukar sekolah): tekan **Buang** → *OK*.
 - Akaun cikgu sendiri ditanda **anda**. Ia tidak boleh dibuang atau diturunkan peranan, supaya cikgu tidak
   terkunci di luar sistem.
@@ -192,7 +193,7 @@ Ia dikemas kini setiap jam. Waktu kemas kini terakhir ditulis di bahagian atas d
 Cikgu boleh buat sendiri: Panel Admin → **Akaun** → *Tambah akaun* → peranan **Pentadbir** (lihat bahagian 4).
 
 **Lupa kata laluan.**
-Admin lain boleh tekan **Kata laluan baharu** dalam Panel Admin → Akaun. Jika cikgu sendiri (satu-satunya
+Admin lain boleh tekan **Pautan kata laluan baharu** dalam Panel Admin → Akaun dan menghantarnya di Telegram. Jika cikgu sendiri (satu-satunya
 admin) lupa, minta pembantu teknikal: Supabase → Authentication → Users → pilih akaun → tetapkan kata laluan.
 
 **Adakah nama guru selamat?**
