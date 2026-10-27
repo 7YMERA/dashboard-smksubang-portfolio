@@ -1,6 +1,8 @@
 // VIEW Jadual Makmal: the computer lab timetable, one week at a time, all labs.
 // Public visitors see subject + class; logged-in admin/pentadbir also see the teacher.
+import Link from 'next/link';
 import { fmtDate } from '../ui/format';
+import WeekPicker from './WeekPicker';
 
 const today = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kuala_Lumpur' });
 const DAY_INDEX = { ISNIN: 1, SELASA: 2, RABU: 3, KHAMIS: 4, JUMAAT: 5 };
@@ -58,26 +60,14 @@ export default function LabView({ data, sourceUrl, loggedIn }) {
   if (!data?.weeks?.length) {
     return <p className="note">Jadual belum disegerakkan. Ia akan muncul selepas sync seterusnya (atau tekan Sync sekarang dalam Panel Admin).</p>;
   }
-  const idx = data.weeks.findIndex((w) => w.week === data.week);
-  const prev = data.weeks[idx - 1]; const next = data.weeks[idx + 1];
-  const cur = data.weeks[idx];
+  const cur = data.weeks.find((w) => w.week === data.week);
   const isCurrent = data.week === data.currentWeek;
   return (
     <>
-      <div className="week-nav">
-        {prev ? <a className="btn" href={`/?v=jadual&w=${prev.week}`}>← Minggu {prev.week}</a> : <span />}
-        <form method="get" action="/" className="week-pick">
-          <input type="hidden" name="v" value="jadual" />
-          <select name="w" defaultValue={data.week} aria-label="Pilih minggu">
-            {data.weeks.map((w) => <option key={w.week} value={w.week}>{w.label}{w.week === data.currentWeek ? ' (minggu ini)' : ''}</option>)}
-          </select>
-          <button className="btn">Lihat</button>
-        </form>
-        {next ? <a className="btn" href={`/?v=jadual&w=${next.week}`}>Minggu {next.week} →</a> : <span />}
-      </div>
+      <WeekPicker weeks={data.weeks} week={data.week} currentWeek={data.currentWeek} />
       <p className="muted lab-meta">
         {cur.start_date && <>{fmtDate(cur.start_date)} – {fmtDate(cur.end_date)} · </>}
-        {isCurrent ? <strong>Minggu ini</strong> : <a href="/?v=jadual">Ke minggu ini</a>}
+        {isCurrent ? <strong>Minggu ini</strong> : <Link href="/?v=jadual" scroll={false}>Ke minggu ini</Link>}
         {!loggedIn && <> · Nama guru dipaparkan selepas log masuk</>}
         {sourceUrl && <> · <a href={sourceUrl} target="_blank" rel="noopener noreferrer">Buka jadual asal ↗</a></>}
       </p>

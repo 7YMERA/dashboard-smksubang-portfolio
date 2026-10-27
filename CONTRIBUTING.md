@@ -56,7 +56,12 @@ cd web && npm run dev              # terminal 2: site on http://localhost:3000
 ## Changing the database
 
 Add a new file in `supabase/migrations/` named `YYYYMMDDHHMMSS_what_it_does.sql`. Never edit one that
-has already been applied. Then:
+has already been applied. That's all: when the pull request is merged into `main`, the **Database migrations**
+GitHub Action (`.github/workflows/db-migrations.yml`) applies it to the live database. Check it went green under
+GitHub → Actions. Keep migrations additive (new tables/columns) so the site keeps working during the minute
+between Vercel deploying and the migration landing.
+
+By hand, if ever needed (needs the database password):
 
 ```bash
 supabase link --project-ref <project-ref>   # once

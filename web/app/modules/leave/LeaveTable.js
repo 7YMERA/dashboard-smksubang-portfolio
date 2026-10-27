@@ -71,7 +71,7 @@ export default function LeaveTable({ rows, total, canReset = false }) {
           (kira-kira 3 minit setiap jam), jadi senarai akan lengkap dalam beberapa jam. Tekan Sync sekarang untuk mempercepatkan.</p>
       )}
       <div className="table-scroll">
-        <table className="sheet-table leave">
+        <table className="sheet-table leave stack">
           <thead>
             <tr><th className="c">Bil</th><th>Nama guru</th><th className="c">Layak CRK</th><th className="c">CRK diguna</th>
               <th>Baki CRK</th><th className="c">Cuti sakit</th><th className="c">Lain-lain</th><th>Penyata</th><th>Pautan guru</th></tr>
@@ -82,20 +82,20 @@ export default function LeaveTable({ rows, total, canReset = false }) {
               const tone = r.baki == null ? 'neutral' : r.baki <= 0 ? 'critical' : r.baki <= 2 ? 'warning' : 'good';
               return (
                 <tr key={r.name}>
-                  <td className="c muted">{r.position}</td>
-                  <td>{r.name}</td>
-                  <td className="c">{r.crk_entitled ?? '—'}</td>
-                  <td className="c">{num.format(r.crk_used)}</td>
-                  <td>
+                  <td className="c muted bil">{r.position}</td>
+                  <td className="title"><strong>{r.name}</strong></td>
+                  <td className="c" data-label="Layak CRK">{r.crk_entitled ?? '—'}</td>
+                  <td className="c" data-label="CRK diguna">{num.format(r.crk_used)}</td>
+                  <td data-label="Baki CRK">
                     <span className="baki">
                       <span className={`chip ${tone}`}>{r.baki == null ? '—' : `${num.format(r.baki)} hari`}</span>
                       <span className="progress-track" aria-hidden="true"><span className="progress-bar" style={{ width: `${pct}%` }} /></span>
                     </span>
                   </td>
-                  <td className="c">{num.format(r.sick)}</td>
-                  <td className="c" title={r.types.filter((t) => !isSick(t) && !/REHAT KHAS/.test(t.type) && t.used).map((t) => `${t.type}: ${t.used}`).join('\n')}>{num.format(r.other)}</td>
-                  <td>{r.sheet_url ? <a href={r.sheet_url} target="_blank" rel="noopener noreferrer">Buka ↗</a> : '—'}</td>
-                  <td><LinkCell r={r} canReset={canReset} /></td>
+                  <td className="c" data-label="Cuti sakit">{num.format(r.sick)}</td>
+                  <td className="c" data-label="Lain-lain" title={r.types.filter((t) => !isSick(t) && !/REHAT KHAS/.test(t.type) && t.used).map((t) => `${t.type}: ${t.used}`).join('\n')}>{num.format(r.other)}</td>
+                  <td data-label="Penyata">{r.sheet_url ? <a href={r.sheet_url} target="_blank" rel="noopener noreferrer">Buka ↗</a> : '—'}</td>
+                  <td data-label="Pautan guru"><LinkCell r={r} canReset={canReset} /></td>
                 </tr>
               );
             })}

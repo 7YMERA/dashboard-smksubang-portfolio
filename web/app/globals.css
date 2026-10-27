@@ -511,3 +511,51 @@ a.btn { text-decoration: none; display: inline-flex; align-items: center; }
 .my-types li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 16px; border-top: 1px solid var(--border); }
 .my-types li:first-child { border-top: 0; }
 .small { font-size: .9rem; }
+
+/* ---- v2.14 set-password links ---- */
+.link-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.login .check { display: flex; flex-direction: row; align-items: center; gap: 8px; font-weight: 500; }
+.login .check input { width: auto; }
+
+/* ---- v2.15 smoother on phones ---- */
+/* Tab being opened: a gentle pulse until the new view arrives (no full page reload any more). */
+.view-tabs .tab-label.pending { animation: tab-pulse .9s ease-in-out infinite; }
+@keyframes tab-pulse { 50% { opacity: .45; } }
+/* Jadual Makmal: ← [week] → on one line; choosing a week opens it at once. */
+.week-nav { flex-wrap: nowrap; justify-content: flex-start; }
+.week-nav .btn { flex: none; }
+.week-nav .btn.disabled { opacity: .35; pointer-events: none; }
+.week-pick { flex: 1; min-width: 0; } .week-pick select { width: 100%; max-width: none; }
+/* Lab grid scrolls sideways on small screens: keep the day column in place. */
+.lab-grid tbody th, .lab-grid thead th:first-child { position: sticky; left: -1px; z-index: 1; box-shadow: -8px 0 0 var(--surface-2); }
+.lab-grid thead th:first-child { background: #00477a; }
+@media (max-width: 640px) {
+  .wide-only { display: none; }
+  /* Hero: the top bar already shows the school, so the banner keeps only the title, numbers and people. */
+  .hero-school, .hero-lead { display: none; }
+  .hero-inner { padding: 18px 16px 18px; gap: 14px; }
+  .hero h1 { margin-top: 0; }
+  .hero-title { font-size: 1.7rem; }
+  .hero-stats { display: grid; grid-template-columns: 1fr 1fr 1.4fr; gap: 8px; margin-top: 14px; }
+  .hero-stat { min-width: 0; padding: 8px 10px; }
+  .hero-stat strong { font-size: 1.2rem; } .hero-stat.wide strong { font-size: .85rem; padding-top: 4px; }
+  .hero-stat span { font-size: .7rem; }
+  .hero-people img { width: 44px; height: 44px; }
+  .hero.compact .hero-inner { padding: 10px 16px; }
+  .hero.compact .hero-kicker { display: none; }
+  .hero.compact .hero-title { font-size: 1.15rem; margin-top: 0; }
+  /* Tables with class "stack" become one card per row: no sideways scrolling, every value labelled. */
+  .table-scroll:has(.stack) { overflow: visible; border: 0; background: none; box-shadow: none; }
+  .sheet-table.stack, .sheet-table.stack tbody { display: block; }
+  .sheet-table.stack thead { display: none; }
+  .sheet-table.stack tr { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; padding: 12px 14px; margin-bottom: 10px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); }
+  .sheet-table.stack tbody tr:nth-child(even) td { background: none; }
+  .sheet-table.stack td { display: block; padding: 0; border: 0; text-align: left; white-space: normal; }
+  .sheet-table.stack td.bil { display: none; }
+  .sheet-table.stack td.title { grid-column: 1 / -1; font-size: .95rem; }
+  .sheet-table.stack td[data-label]::before { content: attr(data-label); display: block; font-size: .7rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-bottom: 2px; }
+  .sheet-table.stack td[colspan] { grid-column: 1 / -1; text-align: center; }
+  .sheet-table.leave.stack td[data-label="Pautan guru"] { grid-column: 1 / -1; }
+}

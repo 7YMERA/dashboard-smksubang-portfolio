@@ -10,7 +10,11 @@ export const metadata = {
   metadataBase: new URL(site),
   title: 'Data & Maklumat SMK Subang',
   description: 'Tugasan, pautan dan analisis SMK Subang di satu tempat.',
-  icons: { icon: '/brand/logo.png', apple: '/brand/logo.png' },
+  // School crest, squared from the official GIF: browser tab, home screen (iPhone uses apple-icon).
+  icons: {
+    icon: [{ url: '/favicon.ico', sizes: '48x48' }, { url: '/brand/icon-192.png', sizes: '192x192', type: 'image/png' }],
+    apple: '/brand/apple-icon.png',
+  },
   openGraph: { title: 'Pengurusan Data dan Maklumat · SMK Subang' },
 };
 

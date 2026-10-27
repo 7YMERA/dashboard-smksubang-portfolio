@@ -1,5 +1,36 @@
 [
   {
+    "version": "2.16",
+    "date": "2026-10-27",
+    "title": "Lencana sekolah sebagai ikon",
+    "changes": [
+      "Tab pelayar kini menunjukkan lencana SMK Subang dengan jelas.",
+      "Jika dashboard ditambah ke Skrin Utama telefon, ikonnya ialah lencana sekolah."
+    ]
+  },
+  {
+    "version": "2.15",
+    "date": "2026-10-27",
+    "title": "Lebih lancar, terutama di telefon",
+    "changes": [
+      "Bertukar antara Semakan Tinjauan, Jadual Makmal, Penyata Cuti, Analisis dan Pautan kini lebih pantas: halaman tidak dimuat semula.",
+      "Di telefon, kepala biru lebih kecil supaya tugasan kelihatan lebih cepat.",
+      "Di telefon, senarai tugasan dan Penyata Cuti dipaparkan sebagai kad, tidak perlu leret ke tepi.",
+      "Jadual Makmal: pilih minggu dan ia terus dibuka (tiada butang Lihat). Lajur hari kekal di tepi semasa meleret."
+    ]
+  },
+  {
+    "version": "2.14",
+    "date": "2026-10-27",
+    "title": "Akaun baharu: pautan untuk tetapkan kata laluan sendiri",
+    "changes": [
+      "Tambah akaun tidak lagi memerlukan kata laluan sementara (butang Jana dibuang).",
+      "Selepas Tambah akaun, tekan Hantar di Telegram: orang itu menerima pautan khas, menetapkan kata laluannya sendiri dan terus masuk ke Panel Admin.",
+      "Pautan sah 24 jam dan boleh digunakan sekali sahaja. Lupa kata laluan: tekan Pautan kata laluan baharu pada akaunnya.",
+      "Tiada sesiapa, termasuk Admin, nampak kata laluan orang lain."
+    ]
+  },
+  {
     "version": "2.11",
     "date": "2026-10-27",
     "title": "Penyata Cuti membaca semua guru",
