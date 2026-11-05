@@ -1,5 +1,16 @@
 [
   {
+    "version": "2.17",
+    "date": "2026-10-28",
+    "title": "Menu pada nama anda",
+    "changes": [
+      "Selepas log masuk, tekan nama anda di penjuru kanan atas: menu terbuka dengan semua bahagian Panel Admin, Tema dan Log keluar.",
+      "Di telefon, menu itu naik dari bawah skrin supaya senang ditekan.",
+      "Panel Admin tidak lagi ada menu besar di sebelah kiri. Bahagiannya kini sebaris butang di atas, sama seperti dashboard awam.",
+      "Sebelum log masuk, butang di kanan atas hanya tertulis Log masuk."
+    ]
+  },
+  {
     "version": "2.16",
     "date": "2026-10-27",
     "title": "Lencana sekolah sebagai ikon",

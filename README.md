@@ -116,6 +116,7 @@ merge) · Web App Manifest · optional email via Resend · hand-rolled SVG chart
 
 | Version | What changed | Why |
 |---|---|---|
+| **2.17** | Name menu at the top right replaces the Panel Admin sidebar; Panel Admin gets the same top bar plus a row of section tabs | One navigation pattern for public and admin pages, less clutter, works as a bottom sheet on phones |
 | **2.16** | School crest as favicon and home-screen icon (squared, maskable for Android), web manifest | Teachers add the dashboard to their phone's home screen; it should look like the school's own app |
 | **2.15** | Client-side view switching with a pending indicator, one-line week picker for the lab timetable, stacked card tables and a compact header on phones | Most teachers open it on a phone; the header used to take 600 px before any task showed |
 | **2.14** | One-time set-password links instead of admin-generated passwords, shared through Telegram | Passwords were being pasted into chats; now nobody but the owner ever knows one |

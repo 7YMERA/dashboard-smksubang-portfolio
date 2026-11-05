@@ -1,20 +1,20 @@
-import { logout } from '@/app/admin/actions';
+import AccountMenu from './AccountMenu';
 import ThemeToggle from './ThemeToggle';
 import { BRAND } from './brand';
 
-// Sticky app bar of the public pages. Logged in: "Panel Admin" + "Log keluar"; otherwise "Log masuk".
-export default function TopBar({ links = [], login = true, loggedIn = false }) {
+// Sticky app bar of every page. Logged in: the name button with its menu (AccountMenu);
+// otherwise the theme switch and "Log masuk". `title` replaces the subtitle (e.g. "Panel Admin").
+export default function TopBar({ admin = null, badges, login = true, title = 'Data dan Maklumat', home = '/' }) {
   return (
     <div className="topbar">
       <div className="topbar-inner">
-        <a href="/" className="brand"><img src={BRAND.crest} alt="" width="22" height="28" />{BRAND.school} <span className="brand-sub">· Data dan Maklumat</span></a>
-        <nav className="topnav" aria-label="Navigasi">
-          {links.map((l) => <a key={l.href} href={l.href}>{l.label}</a>)}
-        </nav>
-        <ThemeToggle />
-        {loggedIn ? (
-          <form action={logout}><button type="submit" className="logout-btn">Log keluar</button></form>
-        ) : login && <a href="/admin" className="login-btn">Log masuk</a>}
+        <a href={home} className="brand"><img src={BRAND.crest} alt="" width="22" height="28" />{BRAND.school} <span className="brand-sub">· {title}</span></a>
+        {admin ? <AccountMenu admin={admin} badges={badges} /> : (
+          <>
+            <ThemeToggle />
+            {login && <a href="/admin" className="login-btn">Log masuk</a>}
+          </>
+        )}
       </div>
     </div>
   );
