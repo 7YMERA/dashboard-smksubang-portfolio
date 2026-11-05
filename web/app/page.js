@@ -46,7 +46,7 @@ export default async function Home({ searchParams }) {
 
   return (
     <>
-      <TopBar loggedIn={Boolean(admin)} links={admin ? [{ href: '/admin', label: 'Panel Admin' }] : []} />
+      <TopBar admin={admin && { name: admin.name, email: admin.email, role: admin.role }} />
       <Hero compact={view !== 'semakan'}>
         <div className="hero-stats">
           <div className="hero-stat"><strong>{open.length}</strong><span>tugasan terbuka</span></div>

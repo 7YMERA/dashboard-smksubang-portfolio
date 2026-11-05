@@ -132,9 +132,10 @@ How it is enforced:
 
 ### Panel Admin layout
 
-`web/app/admin/(panel)/` holds one page per section, framed by `layout.js` → `modules/admin/AdminShell.js`: a sidebar
-(collapsible on computers and remembered per browser; a ☰ slide-out menu on phones) with badges for pending
-submissions and data problems, who is logged in, the theme switch, **Lihat dashboard** and **Log keluar**.
+`web/app/admin/(panel)/` holds one page per section, framed by `layout.js` → `modules/admin/AdminShell.js`: the same top bar as the
+public page plus one row of section tabs. The name button at the top right (`modules/ui/AccountMenu.js`) opens a
+role-based menu (a bottom sheet on phones) with every section the role can open, badges for pending submissions and
+data problems, the theme switch, **Lihat dashboard** and **Log keluar**. New sections go in `modules/admin/sections.js`.
 
 | URL | Section | Who |
 |---|---|---|
@@ -147,8 +148,8 @@ submissions and data problems, who is logged in, the theme switch, **Lihat dashb
 | `/admin/akaun` | Akaun | admin |
 | `/admin/audit?type=` | Log Audit | pentadbir+ |
 
-`lib/admin-data.js` fetches the overview once per request (sidebar badges and pages share it). The public top bar
-shows **Panel Admin** and **Log keluar** when logged in.
+`lib/admin-data.js` fetches the overview once per request (menu and tab badges and pages share it). The public top bar
+shows the name menu when logged in and **Log masuk** otherwise.
 - Sessions last 7 days. Changing `ADMIN_TOKEN` in Vercel logs everyone out.
 - **Audit:** every login (success or failure, with method and the visitor's IP) and every write through Panel Admin is
   recorded in `audit_log` by the API (`api/src/audit.js`). Updates store only the fields that changed (`dari → kepada`).
