@@ -9,6 +9,16 @@ page and a messy task spreadsheet, kept fresh from Google Sheets every hour.**
 
 ![Dashboard (light)](docs/screenshots/dashboard-light.png)
 
+## At a glance
+
+| | |
+|---|---|
+| **Users** | About 150 teachers, a principal and a data manager, mostly on phones |
+| **Current version** | 2.17, with a plain-Malay "what's new" note shipped inside the app for every change |
+| **Stack** | Next.js, Express, Supabase (Postgres with row-level security), Vercel, Google Apps Script |
+| **Highlights** | Public page that only ever receives totals, role-based admin panel, append-only audit log, one-time set-password links via Telegram, installable on a phone's home screen |
+| **Where to look** | [Privacy by design](#privacy-by-design) · [Architecture](#architecture) · [Recent updates](#recent-updates) |
+
 ## The problem
 
 The school's data manager ran everything through a page of seven links and one large "SEMAKAN" spreadsheet:
@@ -31,6 +41,9 @@ the source of truth, and every view links back).
   straight to Telegram, the app the teachers actually use. Nobody ever types or sees someone else's password.
 - **Built for phones first:** instant view switching with no page reloads, card layouts instead of sideways-scrolling
   tables, and the school crest as an installable home-screen icon.
+- **One account menu:** once signed in, the name at the top right opens a role-based menu (a bottom sheet on phones)
+  with every Panel Admin section, the theme switch and sign-out. Panel Admin has the same top bar as the public page
+  plus a row of section tabs, so there is a single navigation pattern everywhere.
 - **Teachers' own leave statement** through a personal secret link (no login, no IC numbers).
 - **Hourly sync** from Google Sheets/Forms via Apps Script, plus a *Sync sekarang* button.
 
@@ -38,7 +51,7 @@ the source of truth, and every view links back).
 |---|---|---|
 | ![Phone](docs/screenshots/dashboard-phone.png) | ![Dark](docs/screenshots/dashboard-dark.png) | ![Admin](docs/screenshots/admin-panel-light.png) |
 
-*Screenshots use sample data (made-up names).*
+*Screenshots use sample data (made-up names). They predate the v2.17 account menu; the layout described above is current.*
 
 ## Architecture
 
@@ -136,9 +149,9 @@ Every user-visible change also ships a plain-Malay "what's new" note inside the 
 
 ## Built with AI assistance
 
-This project was built with AI assistance (**Claude Code**), working from the school data manager's real
-requirements: the problem, access rules and privacy constraints were set by people, and every change was
-reviewed, tested and deployed against the live school setup.
+This project is built and maintained by its owner with AI assistance (**Claude Code**). The problem, the access
+rules and the privacy constraints come from the school's real needs, and every change is reviewed by a person, tested
+(CI on every pull request) and deployed through GitHub and Vercel.
 
 ## Run it yourself
 
