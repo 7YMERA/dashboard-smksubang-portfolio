@@ -51,7 +51,11 @@ the source of truth, and every view links back).
 |---|---|---|
 | ![Phone](docs/screenshots/dashboard-phone.png) | ![Dark](docs/screenshots/dashboard-dark.png) | ![Admin](docs/screenshots/admin-panel-light.png) |
 
-*Screenshots use sample data (made-up names). They predate the v2.17 account menu; the layout described above is current.*
+| Account menu (computer) | Account menu (phone) |
+|---|---|
+| ![Account menu on a computer](docs/screenshots/admin-menu-desktop.png) | ![Account menu on a phone](docs/screenshots/phone-menu.png) |
+
+*Screenshots are of v2.17 and use sample data (made-up names).*
 
 ## Architecture
 
